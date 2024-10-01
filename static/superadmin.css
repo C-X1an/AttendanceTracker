@@ -1,0 +1,495 @@
+/* General Body Styles */
+body {
+    font-family: 'Arial', sans-serif;
+    background-color: #f4f4f4;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    color: #333; /* Improved text color for better readability */
+}
+
+/* Sidebar Styles */
+.sidebar {
+    position: fixed;
+    right: 0;
+    top: 0;
+    width: 250px;
+    height: 100vh;
+    background-color: #2c3e50;
+    transition: transform 0.3s ease;
+    transform: translateX(0); /* Sidebar shown by default */
+    box-shadow: -2px 0 10px rgba(0, 0, 0, 0.2); /* Added shadow for depth */
+    z-index: 1000; /* Ensure it stays above other elements */
+}
+
+.sidebar.show {
+    transform: translateX(0%); /* Show sidebar */
+}
+
+.sidebar h2 {
+    text-align: center;
+    color: #fff; /* White text for better contrast */
+    margin: 1.5em 0; /* Spacing around title */
+}
+
+.sidebar a {
+    color: white;
+    display: block;
+    padding: 1em 1.5em; /* Adjusted padding for better spacing */
+    text-decoration: none;
+    font-size: 1.1em; /* Slightly larger text for better readability */
+    border-bottom: 1px solid #34495e; /* Added subtle divider */
+}
+
+.sidebar a:hover {
+    background-color: #34495e;
+}
+
+/* Sidebar Button Styles */
+.sidebar button {
+    width: 90%;
+    margin: 1em auto;
+    padding: 1em;
+    background-color: #FF6347;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    text-align: center; /* Center text */
+    display: block;
+    box-sizing: border-box;
+    transition: background-color 0.3s ease; /* Smooth transition */
+}
+
+.sidebar button:hover {
+    background-color: #e5533b; /* Darken on hover */
+}
+
+/* Menu Button for Small Screens */
+.menu-btn {
+    display: none;
+    position: fixed;
+    right: 10px;
+    top: 10px;
+    background-color: #333;
+    color: white;
+    padding: 10px 15px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    z-index: 1001; /* Ensure it stays above other elements */
+    font-size: 18px; /* Larger font size for better touch targets */
+}
+
+/* General alert styling */
+.alert {
+    width: 60%; /* Adjust the width of the alert */
+    margin: 1em auto; /* Center the alert and add margin */
+    padding: 15px;
+    border-radius: 5px;
+    display: flex; /* Use flexbox to position the close button */
+    justify-content: space-between; /* Space between message and close button */
+    align-items: center; /* Align the content vertically */
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1); /* Optional shadow for better visibility */
+}
+
+/* Error alert (light red background) */
+.alert-error {
+    background-color: #f8d7da; /* Light red background for error */
+    color: #721c24; /* Darker red for the text */
+    border: 1px solid #f5c6cb;
+}
+
+/* Success alert (green background) */
+.alert-success {
+    background-color: #d4edda; /* Light green background for success */
+    color: #155724; /* Dark green for the text */
+    border: 1px solid #c3e6cb;
+}
+
+/* Close button styling */
+button.close {
+    background-color: transparent; /* Transparent background */
+    border: none; /* Remove border */
+    font-size: 20px; /* Adjust size */
+    color: #000; /* Default color for the cross */
+    cursor: pointer;
+    padding: 0;
+    margin-left: 10px; /* Optional margin to space it from the message */
+}
+
+/* Hover effect for the close button */
+button.close:hover {
+    color: #555; /* Darken the cross on hover */
+    background-color: transparent;
+}
+
+/* Content Styles */
+.content {
+    margin-right: 250px; /* Adjust for sidebar */
+    padding: 2em;
+    flex-grow: 1;
+    background-color: #fff;
+    min-height: calc(100vh - 4em); /* Adjust height based on the navbar */
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Add subtle shadow for depth */
+    border-radius: 8px; /* Rounded corners for a softer look */
+}
+
+.content h1 {
+    color: #333;
+    text-align: center;
+    margin-bottom: 1.5em; /* Add spacing below title */
+}
+
+.content section {
+    margin-bottom: 2em;
+}
+
+.content table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 1em;
+}
+
+.content table, .content th, .content td {
+    border: 1px solid #ddd;
+    padding: 10px;
+}
+
+.content th {
+    background-color: #f4f4f4;
+    text-align: center;
+    font-weight: 600;
+}
+
+/* Button Styles */
+button {
+    padding: 10px 15px;
+    background-color: #007BFF;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: background-color 0.3s ease;
+}
+
+button:hover {
+    background-color: #0056b3;
+}
+
+/* Modal Styles */
+.modal-active::before {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent grey overlay */
+    z-index: 999;
+    pointer-events: auto; /* Ensure overlay is interactive */
+}
+
+/* Ensure content behind the modal is non-interactive */
+.modal-active .sidebar,
+.modal-active .menu-btn {
+    background-color: rgba(0, 0, 0, 0.5);
+    pointer-events: none; /* Disable interaction with sidebar, menu button, and content */
+}
+
+/* Modal itself */
+.modal {
+    display: none;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: white;
+    padding: 2em;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.2); /* Enhanced shadow for depth */
+    z-index: 1000;
+    width: 90%; /* Responsive width */
+    max-width: 400px; /* Maximum width for larger screens */
+    border-radius: 8px; /* Rounded corners for a softer look */
+}
+
+.modal.visible {
+    display: block;
+}
+
+.modal-header {
+    margin-bottom: 1em;
+}
+
+.modal-header h3 {
+    margin: 0;
+    color: #333;
+}
+
+.modal form input,
+.modal form select {
+    width: 100%;
+    padding: 0.75em;
+    margin-bottom: 1em;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    box-sizing: border-box;
+    font-size: 1em;
+}
+
+.modal form select {
+    appearance: none;
+}
+
+.modal-footer {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 1em;
+}
+
+/* Table Styles */
+/* General button styling */
+#attendance-table tbody button, #user-table button {
+    background-color: white;
+    color: black;
+    border: 2px solid;
+    border-radius: 4px;
+    padding: 0.5em 1.5em; /* Increased horizontal padding for width */
+    margin: 0 0.2em;
+    cursor: pointer;
+    font-size: 0.9em;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    display: inline-block; /* Ensures buttons align horizontally */
+    width: auto; /* Allows width to be adjusted by padding */
+}
+
+/* Specific button styles */
+#user-table button.edit-user {
+    border-color: yellow;
+    box-shadow: 0 4px 8px rgba(255, 255, 0, 0.5);
+}
+
+#user-table button.reset-password {
+    border-color: green;
+    box-shadow: 0 4px 8px rgba(0, 255, 0, 0.5);
+}
+
+#user-table button.remove-user {
+    border-color: red;
+    box-shadow: 0 4px 8px rgba(255, 0, 0, 0.5);
+}
+
+/* Hover effects */
+#user-table button:hover {
+    opacity: 0.8;
+    transform: scale(1.05);
+}
+
+/* Specific button hover effects */
+#user-table button.edit-user:hover {
+    border-color: #f1c40f; /* Lighter yellow */
+    box-shadow: 0 4px 12px rgba(255, 255, 0, 0.7);
+}
+
+#user-table button.reset-password:hover {
+    border-color: #2ecc71; /* Lighter green */
+    box-shadow: 0 4px 12px rgba(0, 255, 0, 0.7);
+}
+
+#user-table button.remove-user:hover {
+    border-color: #e74c3c; /* Lighter red */
+    box-shadow: 0 4px 12px rgba(255, 0, 0, 0.7);
+}
+
+#user-table, #attendance-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 1em;
+}
+
+#user-table th, #user-table td, #attendance-table th, #attendance-table td {
+    padding: 10px;
+    text-align: center;
+    border: 1px solid #ddd;
+}
+
+#user-table th:nth-child(2), #user-table th:nth-child(4) {
+    width: 40%;
+}
+
+#user-table th, #attendance-table th {
+    background-color: #f4f4f4;
+    font-weight: bold;
+}
+
+.report-container {
+    position: relative;
+    width: 100%;
+}
+
+#generate-report {
+    position: absolute;
+    right: 0;
+    top: -3.5em;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    padding: 1em 2em;
+    cursor: pointer;
+    font-size: 16px;
+    transition: background-color 0.3s ease;
+}
+
+#generate-report:hover {
+    background-color: #45a049;
+}
+
+.toggle-container {
+    margin: 20px 0;
+    text-align: center;
+}
+
+.toggle-container button {
+    padding: 10px 20px;
+    border: 1px solid #ccc;
+    background-color: #f0f0f0;
+    cursor: pointer;
+    font-weight: bold;
+    margin: 0 5px;
+    transition: background-color 0.3s, color 0.3s;
+}
+
+.toggle-container button.active-toggle {
+    background-color: #007BFF; /* Active background color */
+    color: white; /* Active text color */
+    border: 1px solid #007BFF;
+}
+
+.toggle-container button:hover {
+    background-color: #007BFF;
+    color: white;
+}
+
+.summary-tables {
+    display: flex;
+    gap: 2em; /* Space between the tables */
+    margin-bottom: 2em; /* Space below the summary tables */
+}
+
+.summary-table {
+    flex: 1; /* Ensures each table takes up equal space */
+}
+
+.summary-table table {
+    width: 100%; /* Ensures the table fills the container */
+}
+
+/* Width adjustments for specific columns */
+#morning-absentees-reason-table .remarks-column,
+#afternoon-absentees-reason-table .remarks-column {
+    width: 50%; /* Makes the remarks column wider */
+}
+
+#morning-absentees-type-table th:first-child
+#afternoon-absentees-type-table th:first-child {
+    width: 60%; /* Increases width for 'Username' column */
+}
+
+#attendance-table th:nth-child(2), #attendance-table th:nth-child(6),
+#attendance-table th:nth-child(7) {
+    width: 20%; /* Adjust width as needed */
+}
+
+.filter-btn {
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 12px;
+}
+
+.filter-dropdown {
+    display: none;
+    position: absolute;
+    background-color: grey;
+    border: 1px solid #ddd;
+    padding: 10px;
+    z-index: 100;
+}
+
+.filter-dropdown label {
+    display: block;
+    margin-bottom: 5px;
+}
+
+/* Show the filter dropdown when triggered */
+.filter-dropdown.show {
+    display: block;
+}
+
+/* Edit button styles for attendance table */
+#attendance-table .edit-attendance {
+    background-color: white;
+    color: black;
+    border: 2px solid yellow;
+    border-radius: 4px;
+    padding: 0.5em 1em;
+    cursor: pointer;
+    font-size: 0.9em;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 8px rgba(255, 255, 0, 0.2);
+}
+
+/* Hover effect */
+#attendance-table .edit-attendance:hover {
+    opacity: 0.8;
+    transform: scale(1.05);
+    border-color: #f1c40f; /* Lighter yellow */
+    box-shadow: 0 4px 12px rgba(255, 255, 0, 0.5);
+}
+
+#attendance-table th:nth-child(2) {
+    width: 20%; /* Increases width for 'Username' column */
+}
+
+/* Responsive Styles */
+@media (max-width: 800px) {
+    .sidebar {
+        transform: translateX(100%); /* Hide sidebar on small screens */
+    }
+
+    .menu-btn {
+        display: block;
+    }
+
+    .content {
+        margin-right: 0; /* No margin on small screens */
+        padding: 2em 1em;
+    }
+
+    .content table {
+        font-size: 14px;
+    }
+
+    .content input, .content select, .content button {
+        width: 100%;
+        box-sizing: border-box;
+    }
+
+    .modal {
+        width: 90%; /* Adjust width for small screens */
+    }
+
+    .modal-footer {
+        flex-direction: column; /* Stack buttons vertically on small screens */
+        gap: 1em; /* Space between buttons */
+    }
+
+    .modal-footer button {
+        width: 100%; /* Full width on small screens */
+    }
+}
