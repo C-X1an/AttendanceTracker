@@ -1,0 +1,263 @@
+{% extends "superadmin_layout.html" %}
+
+{% block content %}
+    <!-- Attendance Records Section -->
+    <section>
+        <h2>Attendance Records</h2>
+        <div class="report-container">
+            <button id="generate-report" onclick=download_report()>Generate Report</button>
+
+            <!-- Toggle Switch for Morning and Afternoon -->
+            <div class="toggle-container">
+                <button id="morning-toggle" class="active-toggle" onclick="toggleTables('morning')">Morning</button>
+                <button id="afternoon-toggle" onclick="toggleTables('afternoon')">Afternoon</button>
+            </div>
+
+            <!-- Morning Tables -->
+            <div id="morning-tables" class="attendance-tables">
+                <div class="summary-tables">
+                    <div class="summary-table">
+                        <h3>Morning Personnel Present by Department</h3>
+                        <table id="morning-department-present-table">
+                            <thead>
+                                <tr>
+                                    <th>Department</th>
+                                    <th>Number of Personnel Present</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <!-- Dynamic content loaded here -->
+                                 {% for department in dept_strength["AM"] %}
+                                 <tr>
+                                    <td>{{ department }}</td>
+                                    <td>{{ dept_strength["AM"][department] }}</td>
+                                 </tr>
+                                 {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <div class="summary-table">
+                        <h3>Morning Regular Absentees</h3>
+                        <table id="morning-absentees-type-table">
+                            <thead>
+                                <tr>
+                                    <th>Username</th>
+                                    <th>Reason for Absence</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <!-- Dynamic content loaded here -->
+                                 {% for regular in regular_absentees["AM"] %}
+                                 <tr>
+                                    <td>{{ regular["username"] }}</td>
+                                    <td>{{ regular["remarks"] }}</td>
+                                 </tr>
+                                 {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- Morning Absentees by Reason Table -->
+                <h3>Morning Absentees by Reason</h3>
+                <table id="morning-absentees-reason-table">
+                    <thead>
+                        <tr>
+                            <th>Reason</th>
+                            <th>Number of Absentees</th>
+                            <th class="remarks-column">Remarks</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!-- Dynamic content loaded here -->
+                        {% for reason in absentee_by_reason["AM"] %}
+                        <tr>
+                            <td>{{ reason }}</td>
+                            <td>{{ absentee_by_reason["AM"][reason][0] }}</td>
+                            <td>{{ absentee_by_reason["AM"][reason][1] }}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- Afternoon Tables -->
+            <div id="afternoon-tables" class="attendance-tables" style="display: none;">
+                <div class="summary-tables">
+                    <div class="summary-table">
+                        <h3>Afternoon Personnel Present by Department</h3>
+                        <table id="afternoon-department-present-table">
+                            <thead>
+                                <tr>
+                                    <th>Department</th>
+                                    <th>Number of Personnel Present</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <!-- Dynamic content loaded here -->
+                                {% for department in dept_strength["PM"] %}
+                                <tr>
+                                   <td>{{ department }}</td>
+                                   <td>{{ dept_strength["PM"][department] }}</td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <div class="summary-table">
+                        <h3>Afternoon Regular Absentees</h3>
+                        <table id="afternoon-absentees-type-table">
+                            <thead>
+                                <tr>
+                                    <th>Username</th>
+                                    <th>Reason for Absence</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <!-- Dynamic content loaded here -->
+                                {% for regular in regular_absentees["PM"] %}
+                                <tr>
+                                   <td>{{ regular["username"] }}</td>
+                                   <td>{{ regular["remarks"] }}</td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- Afternoon Absentees by Reason Table -->
+                <h3>Afternoon Absentees by Reason</h3>
+                <table id="afternoon-absentees-reason-table">
+                    <thead>
+                        <tr>
+                            <th>Reason</th>
+                            <th>Number of Absentees</th>
+                            <th class="remarks-column">Remarks</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!-- Dynamic content loaded here -->
+                        {% for reason in absentee_by_reason["PM"] %}
+                        <tr>
+                            <td>{{ reason }}</td>
+                            <td>{{ absentee_by_reason["PM"][reason][0] }}</td>
+                            <td>{{ absentee_by_reason["PM"][reason][1] }}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- Attendance Records Table -->
+            <h3>Attendance Records</h3>
+            <table id="attendance-table">
+                <thead>
+                    <tr>
+                        <th>Employee Type
+                            <button class="filter-btn" onclick="openFilterDropdown('employee-type-filter')">⮟</button>
+                            <div id="employee-type-filter" class="filter-dropdown">
+                                <label><input type="checkbox" value="NSF" onchange="filterTable()" checked> NSF</label>
+                                <label><input type="checkbox" value="REG" onchange="filterTable()" checked> REG</label>
+                            </div>
+                        </th>
+                        <th>Username</th>
+                        <th>Department
+                            <button class="filter-btn" onclick="openFilterDropdown('department-filter')">⮟</button>
+                            <div id="department-filter" class="filter-dropdown">
+                                <label><input type="checkbox" value="DHQ" onchange="filterTable()" checked> DHQ</label>
+                                <label><input type="checkbox" value="DCS" onchange="filterTable()" checked> DCS</label>
+                                <label><input type="checkbox" value="DMSP" onchange="filterTable()" checked> DMSP</label>
+                                <label><input type="checkbox" value="DSP" onchange="filterTable()" checked> DSP</label>
+                            </div>
+                        </th>
+                        <th>Morning Check-In
+                            <button class="filter-btn" onclick="openFilterDropdown('morning-checkin-filter')">⮟</button>
+                            <div id="morning-checkin-filter" class="filter-dropdown">
+                                <label><input type="checkbox" value="Present" onchange="filterTable()" checked> Present</label>
+                                <label><input type="checkbox" value="Off" onchange="filterTable()" checked> Off</label>
+                                <label><input type="checkbox" value="Leave" onchange="filterTable()" checked> Leave</label>
+                                <label><input type="checkbox" value="RSO" onchange="filterTable()" checked> RSO</label>
+                                <label><input type="checkbox" value="Medical Leave" onchange="filterTable()" checked> Medical Leave</label>
+                                <label><input type="checkbox" value="MA" onchange="filterTable()" checked> MA</label>
+                                <label><input type="checkbox" value="Course" onchange="filterTable()" checked> Course</label>
+                                <label><input type="checkbox" value="AO" onchange="filterTable()" checked> AO</label>
+                                <label><input type="checkbox" value="-" onchange="filterTable()" checked> -</label>
+                            </div>
+                        </th>
+                        <th>Afternoon Check-In
+                            <button class="filter-btn" onclick="openFilterDropdown('afternoon-checkin-filter')">⮟</button>
+                            <div id="afternoon-checkin-filter" class="filter-dropdown">
+                                <label><input type="checkbox" value="Present" onchange="filterTable()" checked> Present</label>
+                                <label><input type="checkbox" value="Off" onchange="filterTable()" checked> Off</label>
+                                <label><input type="checkbox" value="Leave" onchange="filterTable()" checked> Leave</label>
+                                <label><input type="checkbox" value="RSO" onchange="filterTable()" checked> RSO</label>
+                                <label><input type="checkbox" value="Medical Leave" onchange="filterTable()" checked> Medical Leave</label>
+                                <label><input type="checkbox" value="MA" onchange="filterTable()" checked> MA</label>
+                                <label><input type="checkbox" value="Course" onchange="filterTable()" checked> Course</label>
+                                <label><input type="checkbox" value="AO" onchange="filterTable()" checked> AO</label>
+                                <label><input type="checkbox" value="-" onchange="filterTable()" checked> -</label>
+                            </div>
+                        </th>
+                        <th>Remarks</th>
+                        <th>Edit</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for attendance in overall_attendance %}
+                    <tr>
+                        <td>{{ attendance["employee_type"] }}</td>
+                        <td>{{ attendance["username"] }}</td>
+                        <td>{{ attendance["department"] }}</td>
+                        <td>{{ attendance["morning_status"] }}</td>
+                        <td>{{ attendance["afternoon_status"] }}</td>
+                        <td>{{ attendance["remarks"] }}</td>
+                        <td>
+                            <button class="edit-attendance" onclick='showModal("editAttendance", {{ attendance["username"] | tojson }})'>Edit</button>
+                            <div class="modal" id="{{ attendance['username'] + 'editAttendanceModal'}}">
+                                <div class="modal-header">
+                                    <h3>Edit Attendance</h3>
+                                </div>
+                                <form id="editAttendanceForm" action="/edit-attendance" method="POST">
+                                    <input type="text" name="username" placeholder="Username" value="{{ attendance['username'] }}" readonly>
+                                    <select name="morning_check_in" required>
+                                        <option value="" disabled selected>Morning Check-In Status</option>
+                                        <option value="Present">Present</option>
+                                        <option value="Off">Off</option>
+                                        <option value="Leave">Leave</option>
+                                        <option value="RSO">RSO</option>
+                                        <option value="Medical Leave">Medical Leave</option>
+                                        <option value="MA">MA</option>
+                                        <option value="Coruse">Coruse</option>
+                                        <option value="AO">AO</option>
+                                    </select>
+                                    <select name="afternoon_check_in" required>
+                                        <option value="" disabled selected>Afternoon Check-In Status</option>
+                                        <option value="Present">Present</option>
+                                        <option value="Off">Off</option>
+                                        <option value="Leave">Leave</option>
+                                        <option value="RSO">RSO</option>
+                                        <option value="Medical Leave">Medical Leave</option>
+                                        <option value="MA">MA</option>
+                                        <option value="Coruse">Coruse</option>
+                                        <option value="AO">AO</option>
+                                    </select>
+                                    <input type="text" name="remarks" placeholder="Enter any remarks here" value="{{ remarks }}">
+                                    <div class="modal-footer">
+                                        <button type="button" class="closeModal">Close</button>
+                                        <button type="submit">Save Changes</button>
+                                    </div>
+                                </form>
+                            </div>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </section>
+
+
+{% endblock %}
