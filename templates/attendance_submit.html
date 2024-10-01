@@ -1,0 +1,70 @@
+{% extends "users_layout.html" %}
+
+{% block content %}
+    <!-- Today's Attendance Section -->
+    <div class="section" id="todays-attendance-section">
+        <h1>Today's Attendance</h1>
+        <table>
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Employee Type</th>
+                    <th>Department</th>
+                    <th>Morning Status</th>
+                    <th>Afternoon Status</th>
+                    <th>Remarks</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>{{ todays_attendance["username"] }}</td>
+                    <td>{{ todays_attendance["employee_type"] }}</td>
+                    <td>{{ todays_attendance["department"] }}</td>
+                    <td>{{ todays_attendance["morning_status"] }}</td>
+                    <td>{{ todays_attendance["afternoon_status"] }}</td>
+                    <td>{{ todays_attendance["remarks"] }}</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <!-- Combined Morning and Afternoon Attendance Section -->
+    <div class="section" id="attendance-section">
+        <h1>Attendance Submission</h1>
+        <form action="/submit-attendance" method="POST">
+            <div class="toggle-container">
+                <input type="checkbox" id="morning-present" name="morning_present" checked>
+                <label for="morning-present">Morning Present</label>
+            </div>
+            <div class="dropdown-container" id="morning-dropdown">
+                <select id="morning-reason" name="morning_reason">
+                    <option value="" disabled selected>Select reason for absence</option>
+                    <option value="Off">Off</option>
+                    <option value="Leave">Leave</option>
+                    <option value="RSO">RSO</option>
+                    <option value="Medical Leave">Medical Leave</option>
+                    <option value="MA">MA</option>
+                    <option value="Course">Course</option>
+                    <option value="AO">AO</option>
+                </select>
+            </div>
+            <div class="toggle-container">
+                <input type="checkbox" id="afternoon-present" name="afternoon_present" checked>
+                <label for="afternoon-present">Afternoon Present</label>
+            </div>
+            <div class="dropdown-container" id="afternoon-dropdown">
+                <select id="afternoon-reason" name="afternoon_reason">
+                    <option value="" disabled selected>Select reason for absence</option>
+                    <option value="Off">Off</option>
+                    <option value="Leave">Leave</option>
+                    <option value="RSO">RSO</option>
+                    <option value="Medical Leave">Medical Leave</option>
+                    <option value="MA">MA</option>
+                    <option value="Coruse">Coruse</option>
+                    <option value="AO">AO</option>
+                </select>
+            </div>
+            <textarea id="attendance-remarks" name="remarks" placeholder="Remarks"></textarea>
+            <button type="submit">Submit</button>
+        </form>
+    </div>
+{% endblock %}

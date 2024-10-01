@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="{{ url_for('static', filename='user.js') }}"></script>
+    <link href="{{ url_for('static', filename='user.css') }}" rel="stylesheet">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <title>User Dashboard</title>
+</head>
+<body>
+    <!-- Navbar -->
+    <button class="menu-button">☰</button>
+    <div class="navbar">
+        <div class="top-links">
+            <a href="/user_dashboard">Attendance Submission</a>
+        </div>
+        <div class="bottom-links">
+            <a href="/reset-password">Reset Password</a>
+            <a onclick="logout()">Logout</a>
+        </div>
+    </div>
+
+    <!-- Main Container -->
+    <div class="container">
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages[0] %}
+                {% for category, message in messages %}
+                    {% if category == "error" %}
+                    <div class="alert alert-error" role="alert">
+                    {% else %}
+                    <div class="alert alert-success" role="alert">
+                    {% endif %}
+                        {{ message }}
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+        <h1>User Dashboard</h1>
+        {% block content %} {% endblock %}
+    </div>
+
+</body>
+</html>
