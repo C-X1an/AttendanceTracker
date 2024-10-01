@@ -1,0 +1,317 @@
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f4;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+/* Navbar */
+.menu-button {
+    display: none;
+    background-color: #333;
+    color: white;
+    border: none;
+    padding: 0.75em 1em;
+    cursor: pointer;
+    position: fixed;
+    top: 10px;
+    right: 10px;
+    z-index: 1001; /* Ensure it's above other elements */
+    border-radius: 5px;
+    transition: background-color 0.3s ease;
+}
+
+.menu-button:hover {
+    background-color: #555;
+}
+
+.navbar {
+    background-color: #333;
+    color: white;
+    padding: 1em;
+    width: 220px;
+    display: flex;
+    flex-direction: column;
+    position: fixed;
+    right: 0;
+    top: 0;
+    height: 100%;
+    box-shadow: -2px 0 4px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease;
+}
+
+.navbar.hidden {
+    transform: translateX(100%); /* Hide sidebar */
+}
+
+.navbar .top-links a,
+.navbar .bottom-links a {
+    color: white;
+    text-decoration: none;
+    padding: 0.75em 1em;
+    margin: 0.5em 0;
+    display: block;
+    border-radius: 5px;
+    transition: background-color 0.3s ease;
+}
+
+.navbar .top-links a:hover,
+.navbar .bottom-links a:hover {
+    background-color: #555;
+}
+
+.navbar .bottom-links {
+    margin-top: auto;
+    margin-bottom: 2em;
+}
+
+.container {
+    margin-right: 220px;
+    padding: 2em;
+    flex-grow: 1;
+    background-color: #fff;
+    min-height: calc(100vh - 4em);
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Added shadow for depth */
+    border-radius: 8px; /* Rounded corners for a softer look */
+}
+/* General alert styling */
+.alert {
+    width: 60%; /* Adjust the width of the alert */
+    margin: 1em auto; /* Center the alert and add margin */
+    padding: 15px;
+    border-radius: 5px;
+    display: flex; /* Use flexbox to position the close button */
+    justify-content: space-between; /* Space between message and close button */
+    align-items: center; /* Align the content vertically */
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1); /* Optional shadow for better visibility */
+}
+
+/* Error alert (light red background) */
+.alert-error {
+    background-color: #f8d7da; /* Light red background for error */
+    color: #721c24; /* Darker red for the text */
+    border: 1px solid #f5c6cb;
+}
+
+/* Success alert (green background) */
+.alert-success {
+    background-color: #d4edda; /* Light green background for success */
+    color: #155724; /* Dark green for the text */
+    border: 1px solid #c3e6cb;
+}
+/* Close button styling */
+button.close {
+    background-color: transparent; /* Transparent background */
+    border: none; /* Remove border */
+    font-size: 20px; /* Adjust size */
+    color: #000; /* Default color for the cross */
+    cursor: pointer;
+    padding: 0;
+    margin-left: 10px; /* Optional margin to space it from the message */
+}
+
+/* Hover effect for the close button */
+button.close:hover {
+    color: #555; /* Darken the cross on hover */
+    background-color: transparent;
+}
+
+/* Section */
+.section {
+    margin-bottom: 2em;
+}
+
+/* Buttons */
+button {
+    padding: 10px 15px;
+    background-color: #007BFF;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: background-color 0.3s ease;
+}
+
+button:hover {
+    background-color: #0056b3;
+}
+
+/* Form Elements */
+input[type="text"],
+input[type="password"],
+select,
+textarea {
+    width: 100%;
+    padding: 12px;
+    margin: 10px 0;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    box-sizing: border-box;
+    font-size: 16px; /* Improved readability */
+}
+
+textarea {
+    height: 120px;
+}
+
+/* Reset Password Container */
+.reset-password-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background-color: #e9ecef;
+    padding: 2em;
+    margin: 0 auto;
+    width: 100%;
+    max-width: 500px;
+    box-sizing: border-box;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* Styling for the Today's Attendance section */
+#todays-attendance-section {
+    text-align: center; /* Center-align the content */
+    background-color: #e2e3e5; /* Set a non-white background color */
+    padding: 2em; /* Add padding around the section */
+    border-radius: 8px; /* Optional: add rounded corners */
+    margin-bottom: 2em; /* Add space below this section */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Optional: add subtle shadow for better visibility */
+}
+
+#todays-attendance-section h1 {
+    margin-bottom: 1em; /* Add space below the header */
+}
+
+#todays-attendance-section table {
+    width: 80%; /* Make the table take up full width */
+    margin: 0 auto; /* Center the table */
+    border-collapse: collapse; /* Ensure borders are collapsed for a clean look */
+    border: 2px solid black; /* Add a black border around the table */
+}
+
+#todays-attendance-section th, #todays-attendance-section td {
+    border: 1px solid black; /* Add black borders to table cells */
+    padding: 8px; /* Add padding inside the cells */
+    text-align: center; /* Center-align text in the cells */
+}
+
+/* Adjusting width for specific columns */
+#todays-attendance-section th:nth-child(1),
+#todays-attendance-section td:nth-child(1) {
+    width: 20%; /* Increase width of 'Name' column */
+}
+
+#todays-attendance-section th:nth-child(6),
+#todays-attendance-section td:nth-child(6) {
+    width: 25%; /* Increase width of 'Remarks' column */
+}
+
+#todays-attendance-section th {
+    background-color: #007BFF; /* Set a background color for the header cells */
+    color: white; /* Set text color to white */
+}
+
+#todays-attendance-section tr:nth-child(even) {
+    background-color: #f2f2f2; /* Set a light background color for even rows */
+}
+
+/* Attendance Section */
+#attendance-section {
+    text-align: center;
+    background-color: #f8f9fa;
+    padding: 2em;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+#attendance-section .toggle-container {
+    text-align: left;
+}
+
+/* Header Styling */
+#attendance-section h1 {
+    margin-bottom: 2em;
+    color: #333; /* Improved readability */
+}
+
+/* Form Styling */
+#attendance-section form {
+    display: inline-block;
+    width: 80%;
+    max-width: 500px;
+    box-sizing: border-box;
+}
+
+#attendance-section button {
+    display: block;
+    margin: 1em auto;
+}
+
+/* Dropdowns and Remarks */
+.dropdown-container,
+#attendance-remarks {
+    display: none;
+}
+
+.show {
+    display: block;
+}
+
+.toggle-container {
+    margin-bottom: 1em;
+}
+
+/* Responsive Styles */
+@media (max-width: 800px) {
+    .menu-button {
+        display: block;
+    }
+
+    .navbar {
+        width: 100%;
+        height: auto;
+        flex-direction: column;
+        box-shadow: none;
+        position: fixed;
+        top: 0;
+        right: 0;
+        transform: translateX(100%);
+        padding: 1em; /* Added padding for spacing */
+    }
+
+    .navbar.show {
+        transform: translateX(0%);
+    }
+
+    .navbar .top-links a,
+    .navbar .bottom-links a {
+        padding: 0.5em;
+        margin: 0.5em 0;
+        margin-left: 1em; /* Added margin for spacing */
+        margin-right: 1em; /* Added margin for consistent spacing */
+    }
+
+    .container {
+        margin-right: 0;
+        padding: 1em;
+    }
+
+    .section {
+        margin-bottom: 1.5em;
+    }
+
+    button {
+        padding: 8px 12px;
+    }
+
+    textarea {
+        height: 80px;
+    }
+}
+
