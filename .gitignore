@@ -1,0 +1,12 @@
+.venv/
+__pycache__/
+.pytest_cache/
+*.py[cod]
+.env
+.env.*
+*.db
+*.db-*
+*.sqlite*
+flask_session/
+instance/
+data.xlsx
