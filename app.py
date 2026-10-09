@@ -1,7 +1,11 @@
 from cs50 import SQL
 import datetime
+import os
+import secrets
+from pathlib import Path
 from flask import Flask, render_template, redirect, flash, url_for, send_file, request, session
 from flask_session import Session
+from cachelib import FileSystemCache
 import pandas as pd
 import openpyxl
 from openpyxl.utils.dataframe import dataframe_to_rows
@@ -15,14 +19,21 @@ app = Flask(__name__)
 # Configure session to use filesystem (instead of signed cookies)
 app.config["SESSION_PERMANENT"] = True
 app.config["PERMANENT_SESSION_LIFETIME"] = datetime.timedelta(days=1)
-app.config["SESSION_TYPE"] = "filesystem"
+app.config["SESSION_TYPE"] = "cachelib"
+app.config["SECRET_KEY"] = os.environ.get("ATTENDANCE_SECRET_KEY") or secrets.token_hex(32)
+app.config["SESSION_CACHELIB"] = FileSystemCache(os.environ.get("ATTENDANCE_SESSION_DIR", str(Path(app.instance_path) / "sessions")), threshold=500, mode=0o600)
+app.config["SESSION_COOKIE_HTTPONLY"] = True
+app.config["SESSION_COOKIE_SAMESITE"] = "Lax"
 Session(app)
 
 
 DEPTS = ["DHQ", "DCS", "DMSP", "DSP"]
 STATUS = ["Present", "Off", "Leave", "RSO", "Medical Leave", "MA", "Course", "AO"]
 
-db = SQL("sqlite:///database.db")
+database_path = Path(os.environ.get("ATTENDANCE_DATABASE", str(Path(__file__).parent / "database.db"))).resolve()
+if not database_path.is_file():
+    raise RuntimeError("Database not initialized. Run: python init_db.py")
+db = SQL("sqlite:///" + database_path.as_posix())
 def check_attendance():
     for attendance in db.execute("SELECT * FROM attendance"):
         try:
@@ -74,7 +85,7 @@ def login():
         username = request.form.get("username")
         password = request.form.get("password")
         match_account = db.execute("SELECT * FROM users WHERE username = ?", username)
-        if check_password_hash(match_account[0]["hashed_password"], password):
+        if match_account and password and check_password_hash(match_account[0]["hashed_password"], password):
             session["username"] = username
             if username == "superadmin":
                 session["role"] = "admin"
